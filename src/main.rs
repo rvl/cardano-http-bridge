@@ -130,6 +130,7 @@ fn main() {
                     "mainnet" => net::Config::mainnet(),
                     "staging" => net::Config::staging(),
                     "testnet" => net::Config::testnet(),
+                    "local"   => net::Config::local(),
                     filepath  => {
                         let path = Path::new(filepath);
                         match net::Config::from_file(path) {

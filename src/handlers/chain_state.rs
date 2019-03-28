@@ -34,7 +34,12 @@ impl iron::Handler for Handler {
         };
 
         let genesis_str = genesisdata::data::get_genesis_data(&net.config.genesis_prev).unwrap();
-        let genesis_data = genesisdata::parse::parse(genesis_str.as_bytes());
+        let mut genesis_data = genesisdata::parse::parse(genesis_str.as_bytes());
+        // NOTE Override computed genesis_prev with given one. This is because for integration
+        // tests, the genesis hash is actually hard-coded in the 'cardano-sl' implementation.
+        // As a collateral effect, we can tweak the --system-start at will, and keep the 'same'
+        // genesis data between various run of the integration tests.
+        genesis_data.genesis_prev = net.config.genesis_prev.clone();
 
         let storage = net.storage.read().unwrap();
 

@@ -65,11 +65,16 @@ fn refresh_network(label: &str, net: &mut Network) {
     let netcfg_file = net.storage.read().unwrap().config.get_config_file();
     let net_cfg = net::Config::from_file(&netcfg_file).expect("no network config present");
 
-    let genesis_data = {
+    let mut genesis_data = {
         let genesis_data = genesisdata::data::get_genesis_data(&net_cfg.genesis_prev)
             .expect("genesis data not found");
         genesisdata::parse::parse(genesis_data.as_bytes())
     };
+    // NOTE Override computed genesis_prev with given one. This is because for integration
+    // tests, the genesis hash is actually hard-coded in the 'cardano-sl' implementation.
+    // As a collateral effect, we can tweak the --system-start at will, and keep the 'same'
+    // genesis data between various run of the integration tests.
+    genesis_data.genesis_prev = net.config.genesis_prev.clone();
 
     sync::net_sync(
         &mut sync::get_peer(&label, &net_cfg, true),
