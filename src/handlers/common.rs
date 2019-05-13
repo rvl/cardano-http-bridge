@@ -28,7 +28,16 @@ pub fn get_network<'a>(req: &Request, networks: &'a Networks) -> Option<(String,
     }
 
     match networks.get(network_name.to_owned()) {
-        None => None,
+        None => {
+            if network_name.to_owned() == "testnet" {
+                match networks.get("local") {
+                    None => None,
+                    Some(net) => Some((network_name.to_string(), net)),
+                }
+            } else {
+                None
+            }
+        },
         Some(net) => Some((network_name.to_string(), net)),
     }
 }

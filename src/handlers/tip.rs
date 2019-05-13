@@ -28,20 +28,11 @@ impl iron::Handler for Handler {
     //
     // The current implementation of the TIP handler is to look for the HEAD tag
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
-        let ref network_name = req
-            .extensions
-            .get::<router::Router>()
-            .unwrap()
-            .find("network")
-            .unwrap();
-
-        if !common::validate_network_name(network_name) {
-            return Ok(Response::with(status::BadRequest));
-        }
-
-        let net = match self.networks.get(network_name.to_owned()) {
-            None => return Ok(Response::with(status::BadRequest)),
-            Some(net) => net,
+        let (_, net) = match common::get_network(req, &self.networks) {
+            None => {
+                return Ok(Response::with((status::BadRequest, "Invalid network name")));
+            }
+            Some(x) => x,
         };
 
         match net.storage.read().unwrap().get_block_from_tag(&tag::HEAD) {

@@ -29,15 +29,11 @@ impl iron::Handler for Handler {
     fn handle(&self, req: &mut Request) -> IronResult<Response> {
         let params = req.extensions.get::<router::Router>().unwrap();
 
-        let ref network_name = params.find("network").unwrap();
-
-        if !common::validate_network_name(network_name) {
-            return Ok(Response::with(status::BadRequest));
-        }
-
-        let net = match self.networks.get(network_name.to_owned()) {
-            None => return Ok(Response::with(status::BadRequest)),
-            Some(net) => net,
+        let (_, net) = match common::get_network(req, &self.networks) {
+            None => {
+                return Ok(Response::with((status::BadRequest, "Invalid network name")));
+            }
+            Some(x) => x,
         };
 
         let ref blockid = params.find("blockid").unwrap();
