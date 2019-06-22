@@ -39,7 +39,7 @@ impl iron::Handler for Handler {
             Err(Error::NoSuchTag) => Ok(Response::with((status::NotFound, "No Tip To Serve"))),
             Err(err) => {
                 error!("error while reading block: {:?}", err);
-                Ok(Response::with(status::InternalServerError))
+                Ok(Response::with((status::InternalServerError, "Couldn't find Tip")))
             }
             Ok(block) => Ok(Response::with((
                 status::Ok,
