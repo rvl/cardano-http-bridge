@@ -96,7 +96,7 @@ fn main() {
 
             let log_filter_level = match (arg_verbose, arg_quiet, arg_silent) {
                 (false, false, false) => {log::LevelFilter::Info}  // Default
-                (true , false, false) => {log::LevelFilter::Trace} // Verbose
+                (true , false, false) => {log::LevelFilter::Debug} // Verbose
                 (false, true , false) => {log::LevelFilter::Error} // Quiet
                 (false, false, true ) => {log::LevelFilter::Off}   // Silent
                 _                     =>
