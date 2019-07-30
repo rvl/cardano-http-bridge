@@ -1,6 +1,6 @@
 [package]
 name = "cardano-http-bridge"
-version = "0.0.4"
+version = "0.0.5"
 authors = [ "Nicolas Di Prima <nicolas.diprima@iohk.io>"
           , "Vincent Hanquez <vincent.hanquez@iohk.io>"
           ]
