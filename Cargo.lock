@@ -80,7 +80,7 @@ dependencies = [
 
 [[package]]
 name = "cardano-http-bridge"
-version = "0.0.3"
+version = "0.0.5"
 dependencies = [
  "base64 0.9.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "cardano 0.1.1",
